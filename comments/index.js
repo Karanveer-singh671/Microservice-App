@@ -1,9 +1,13 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const { randomBytes } = require("crypto");
+// req tab
+const cors = require("cors");
+
 const app = express();
 app.use(bodyParser.json());
-const port = 4001;
+app.use(cors());
+const port = 4002;
 
 const commentsByPostId = {};
 app.get("/posts/:id/comments", (req, res) => {
