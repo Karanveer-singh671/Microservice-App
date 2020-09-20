@@ -5,7 +5,7 @@ const app = express();
 app.use(bodyParser.json());
 const port = 4005;
 
-app.post("/post", function (req, res) {
+app.post("/events", function (req, res) {
 	const event = req.body;
 	axios.post("http://localhost:4000/events", event);
 	axios.post("http://localhost:4001/events", event);
