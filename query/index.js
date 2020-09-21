@@ -23,7 +23,5 @@ app.post("/events", function (req, res) {
 		const post = posts[postId];
 		post.comments.push({ id, content });
 	}
-
-	console.log(posts);
 });
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
