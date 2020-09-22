@@ -4,18 +4,17 @@ metadata:
   name: ingress-srv
   annotations:
     kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/use-regex: 'true'
 spec:
   rules:
     - host: posts.com
       http:
         paths:
-          # paths are ordered from greatest to least importance will try to match /posts/create first then next path etc.
           - path: /posts/create
             backend:
-              serviceName: post-clusterip-srv
+              serviceName: posts-clusterip-srv
               servicePort: 4000
-          - path:
+          - path: /posts
             backend:
               serviceName: query-srv
               servicePort: 4002
@@ -23,7 +22,7 @@ spec:
             backend:
               serviceName: comments-srv
               servicePort: 4001
-          - path: /
+          - path: /?(.*)
             backend:
               serviceName: client-srv
               servicePort: 3000

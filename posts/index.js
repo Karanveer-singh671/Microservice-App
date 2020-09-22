@@ -1,8 +1,8 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const { randomBytes } = require("crypto");
-const cors = require("cors");
-const axios = require("axios");
+const express = require('express');
+const bodyParser = require('body-parser');
+const { randomBytes } = require('crypto');
+const cors = require('cors');
+const axios = require('axios');
 
 const app = express();
 app.use(bodyParser.json());
@@ -10,39 +10,37 @@ app.use(cors());
 
 const posts = {};
 
-app.get("/posts", (req, res) => {
-	res.send(posts);
+app.get('/posts', (req, res) => {
+  res.send(posts);
 });
 
-app.post("/posts/create", async (req, res) => {
-	const id = randomBytes(4).toString("hex");
-	const { title } = req.body;
+app.post('/posts/create', async (req, res) => {
+  const id = randomBytes(4).toString('hex');
+  const { title } = req.body;
 
-	posts[id] = {
-		id,
-		title,
-	};
-	// added a kubernetes cluster IP service so to reach out to event bus need to
-	// do a post request to the name of cluster IP service which will communicate with the event bus pod
-	// await axios.post("http://localhost:4005/events", {
-	await axios.post("http://event-bus-srv:4005/events", {
-		type: "PostCreated",
-		data: {
-			id,
-			title,
-		},
-	});
+  posts[id] = {
+    id,
+    title
+  };
 
-	res.status(201).send(posts[id]);
+  await axios.post('http://event-bus-srv:4005/events', {
+    type: 'PostCreated',
+    data: {
+      id,
+      title
+    }
+  });
+
+  res.status(201).send(posts[id]);
 });
 
-app.post("/events", (req, res) => {
-	console.log("Received Event", req.body.type);
+app.post('/events', (req, res) => {
+  console.log('Received Event', req.body.type);
 
-	res.send({});
+  res.send({});
 });
 
 app.listen(4000, () => {
-	console.log("v60");
-	console.log("Listening on 4000");
+  console.log('v55');
+  console.log('Listening on 4000');
 });
