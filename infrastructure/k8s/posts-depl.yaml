@@ -16,4 +16,4 @@ spec:
     spec:
       containers: # containers is an array so use dash
         - name: posts
-          image: karanveersinghdocker/posts:0.0.1
+          image: karanveersinghdocker/posts # use latest behind the scenes

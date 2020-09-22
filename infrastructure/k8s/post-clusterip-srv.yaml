@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: posts-clusterip-srv
+spec:
+  selector:
+    app: posts # match this selector with the selector in the deployment
+  ports:
+    - name: posts
+      port: 4000
+      targetPort: 4000

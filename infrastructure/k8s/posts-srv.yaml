@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: posts-src
+spec:
+  type: NodePort
+  selector:  # try to find all pods with label app:posts, expose those pods to outside world
+    app: posts
+  ports:
+  - name: posts # logging purposes can be anything but name after service usually 
+    protocol: TCP
+    port: 4000 # this port is the Node Port Service which redirects to the target port, usually identical to target port
+    targetPort: 4000 # port we want to direct traffic to (aka to the pod) where application is listening on
+# there is an intermediary port called 'NodePort' and this port is to used from browser to access the Node Port Service
+# in the form 3xxxx can get this number by kubectl get services and see PORT the {port}:3xxxx/{protocol}
+# this entire workflow is only for dev
