@@ -1,0 +1,26 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+deploy:
+  kubectl:
+    manifests: # tell skaffold to watch this directory
+      - ./infrastructure/k8s/* #collection of different config files
+      # lines 4-7 does the following
+      # 1. when start up skaffold run kubectl apply -f
+      # 2. when we make a change apply the files listed in the path
+      # 3. when we stop skaffold look for objects related to the files in path and delete just those objects
+build:
+  local:
+    push: false
+    # do not need to push images to docker hub not required when using skaffold
+  artifacts:
+    - image: karanveersingh/client
+      context: karanveersingh/client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.js"
+            dest: .
+# artifacts section tells skaffold of a specific section of project that we need to maintain
+# some pod out of client directory in our project and when something changes skaffold will try to update the pod
+# takes changed file and take it directly to the pod else e.g if add dependency not code change then will rebuild image
